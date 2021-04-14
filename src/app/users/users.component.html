@@ -1,0 +1,84 @@
+<!-- Main Add Button -->
+<div class="row">
+  <div class="col-md-12 bg-white text-right">
+    <button class="btn btn-primary" id="formUser" (click)="openUserPopup(UserModel)">Add User</button>
+  </div>
+</div>
+
+<!-- User Template -->
+<ng-template #UserModel let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <div class="page-name" style="width: 100%;">
+      <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      <h3>User Name</h3>
+    </div>
+  </div>
+  <div class="modal-body">
+    <form name="userBoard" (ngSubmit)="saveusers(userBoard)" novalidate #userBoard="ngForm">
+      <div class="">
+        <div class="flex flex1">
+          <label class="col-form-label">User Name</label>
+          <input class="form-control" id="userName" name="userName" autocomplete="off" [(ngModel)]="users.userName"
+            #userName="ngModel" [class.has-error]="!userName.valid && userBoard.submitted" required>
+        </div>
+        <br>
+        <div class="flex d-flex ">
+          <button id="save" class="btn btn-success" *ngIf="!users.id" [disabled]="!userBoard.form.valid">Save</button>
+          <button id="save" class="btn btn-success" *ngIf="users.id">Update</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</ng-template>
+
+<!-- User Board -->
+<div style="width:100%">
+  <div class="row">
+    <div class=" col-md-3 card-header ml-2 mt-2" *ngFor="let item of user" style="border: 1px solid;">
+      <button type="button" class="close" aria-label="Close" (click)="removeModal(item.id)">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      <u>
+        <h3 style="text-align: center;" (click)="getId(item.id,UserModel)">{{item.userName}}</h3>
+      </u>
+      <div style="height: 150px;overflow-x: hidden;">
+        <div class="row" style="text-align: center;display: block;" *ngFor="let task of item.task">
+          <label>{{task.task}}</label>
+        </div>
+      </div>
+      <div class="row" style="text-align: center;display:block;">
+        <button id="taskadd" class="btn btn-success" title="Add Task"
+          (click)="openTaskPopup(TaskModel,item.id)">Add</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Task Template -->
+<ng-template #TaskModel let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <div class="page-name" style="width: 100%;">
+      <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      <h3>Task</h3>
+    </div>
+  </div>
+  <div class="modal-body">
+    <form name="taskBoard" (ngSubmit)="saveboards(taskBoard)" novalidate #taskBoard="ngForm">
+      <div class="">
+        <div class="flex flex1">
+          <label class="col-form-label">Task</label>
+          <input class="form-control" id="task" name="task" autocomplete="off" [(ngModel)]="users.usertask.task"
+            #task="ngModel" [class.has-error]="!task.valid && taskBoard.submitted" required>
+        </div>
+        <br>
+        <div class="flex d-flex ">
+          <button id="save" class="btn btn-success" [disabled]="!taskBoard.form.valid">Save</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</ng-template>
